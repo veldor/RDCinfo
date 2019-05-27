@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">РДЦ</string>
+    <string name="discount_name">Скидка</string>
+    <string name="contrast_name">Контраст</string>
+    <string name="discount_size_message">Размер скидки</string>
+    <string name="cancel_selected_message">Сбросить</string>
+    <string name="contrast_size_message">Объём вводимого контрастного вещества</string>
+</resources>

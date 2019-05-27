@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import net.veldor.rdc_info.App;
+import net.veldor.rdc_info.subclasses.Contrast;
 import net.veldor.rdc_info.subclasses.Execution;
 import net.veldor.rdc_info.subclasses.PriceInfo;
 
@@ -19,10 +20,10 @@ public class CostViewModel extends ViewModel {
         DiscountHandler.applyDiscount(which);
     }
 
-    public String calculateExecutions(HashMap<String, Execution> executions, int discountValue) {
+    public int calculateExecutions(HashMap<String, Execution> executions, int discountValue, int contrastCost) {
         int discount = discountValue * 5;
         Collection<Execution> values = executions.values();
-        int totalSumm = 0;
+        int totalSumm = contrastCost;
         for (Execution e :
                 values) {
             // посчитаю сумму со скидкой
@@ -35,7 +36,21 @@ public class CostViewModel extends ViewModel {
 
         }
         if(totalSumm > 0)
-            return CashHandler.toRubles(String.valueOf(totalSumm));
-        return null;
+            return totalSumm;
+        return 0;
+    }
+
+    public int applyContrast(int which) {
+        // получу данные о стоимости
+        int r = 0;
+        if(which > 0){
+            // получу сведения о контрасте
+            PriceInfo priceInfo = App.getInstance().executionsData.getValue();
+            if(priceInfo != null){
+                Contrast cost = priceInfo.contrasts.get(which - 1);
+                r = Integer.valueOf(cost.summ);
+            }
+        }
+        return r;
     }
 }

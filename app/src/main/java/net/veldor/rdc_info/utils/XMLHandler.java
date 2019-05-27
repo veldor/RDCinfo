@@ -1,6 +1,9 @@
 package net.veldor.rdc_info.utils;
 
+import android.util.Log;
+
 import net.veldor.rdc_info.App;
+import net.veldor.rdc_info.subclasses.Contrast;
 import net.veldor.rdc_info.subclasses.Execution;
 import net.veldor.rdc_info.subclasses.PriceInfo;
 
@@ -64,6 +67,20 @@ public class XMLHandler {
                 }
             }
             App.getInstance().executionsHandler.allExecutionsList = executionsList;
+
+            // получу сведения о контрасте
+            NodeList contrasts = (NodeList) xPath.evaluate("prices/price[@type='contrast']", new InputSource(new StringReader(mXml)), XPathConstants.NODESET);
+            length = contrasts.getLength();
+            for (int i = 0; i < length; i++) {
+                Element show = (Element)contrasts.item(i);
+                if(show != null){
+                    Contrast c = new Contrast();
+                    c.name = show.getAttribute(Execution.ATTR_NAME);
+                    c.summ = show.getAttribute(Execution.ATTR_PRICE);
+                    pi.contrasts.add(c);
+                }
+            }
+
             return pi;
         } catch (XPathExpressionException e) {
             e.printStackTrace();

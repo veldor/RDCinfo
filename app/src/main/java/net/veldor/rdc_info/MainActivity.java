@@ -21,6 +21,7 @@ import android.view.View;
 import net.veldor.rdc_info.adapters.ExecutionsAdapter;
 import net.veldor.rdc_info.subclasses.Execution;
 import net.veldor.rdc_info.subclasses.PriceInfo;
+import net.veldor.rdc_info.utils.CashHandler;
 import net.veldor.rdc_info.utils.CostViewModel;
 
 import java.util.HashMap;
@@ -28,12 +29,15 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private CostViewModel mMyViewModel;
-    private PriceInfo mData;
     private ExecutionsAdapter mAdapter;
     private AlertDialog.Builder mDiscountDialog;
     private int mDiscountSelected = 0;
+    private int mContrastSelected = 0;
     private View mRootView;
     private Snackbar mTotalCostSnackbar;
+    private HashMap<String, Execution> mExecutions;
+    private AlertDialog.Builder mContrastDialog;
+    private int mContrastCost = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         });
 
         // создам адаптер
-        mData = executions.getValue();
-        if (mData != null) {
-            mAdapter = new ExecutionsAdapter(mData.executions);
+        PriceInfo data = executions.getValue();
+        if (data != null) {
+            mAdapter = new ExecutionsAdapter(data.executions);
         } else {
             mAdapter = new ExecutionsAdapter(null);
         }
@@ -71,21 +75,26 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onChanged(@Nullable HashMap<String, Execution> executions) {
                 // рассчитаю стоимость услуг и выведу её в снекбаре
+                mExecutions = executions;
+                Log.d("surprise", "onChanged: executions changed " + executions);
                 calculateTotal(executions);
             }
         });
     }
 
     private void calculateTotal(HashMap<String, Execution> executions) {
+        // посчитаю сумму за контраст
+        int summ = mContrastCost;
         if (executions != null) {
-            String cost = mMyViewModel.calculateExecutions(executions, mDiscountSelected);
-            if (cost != null) {
-                mTotalCostSnackbar = Snackbar.make(mRootView, cost, Snackbar.LENGTH_INDEFINITE);
-                mTotalCostSnackbar.show();
-            } else {
-                if (mTotalCostSnackbar != null) {
-                    mTotalCostSnackbar.dismiss();
-                }
+            summ = mMyViewModel.calculateExecutions(executions, mDiscountSelected, summ);
+        }
+        if(summ > 0){
+            mTotalCostSnackbar = Snackbar.make(mRootView, CashHandler.toRubles(summ), Snackbar.LENGTH_INDEFINITE);
+            mTotalCostSnackbar.show();
+        }
+        else{
+            if (mTotalCostSnackbar != null) {
+                mTotalCostSnackbar.dismiss();
             }
         }
     }
@@ -105,8 +114,52 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             case R.id.action_discount:
                 showDiscountDialog();
                 return false;
+            case R.id.action_show:
+                showList();
+                return false;
+            case R.id.action_cancel:
+                dropSelected();
+                return false;
+            case R.id.action_contrast:
+                showContrastDialog();
+                return false;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showContrastDialog() {
+        if (mContrastDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.contrast_size_message))
+                    .setSingleChoiceItems(PriceInfo.contrastSizes, mContrastSelected, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setContrast(which);
+                            dialog.dismiss();
+                        }
+                    });
+            mContrastDialog = builder;
+        } else {
+            mContrastDialog.setSingleChoiceItems(PriceInfo.contrastSizes, mContrastSelected, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setContrast(which);
+                    dialog.dismiss();
+                }
+            });
+        }
+        mContrastDialog.create().show();
+    }
+
+
+    private void dropSelected() {
+        // сброшу выбранные обследования
+        setDiscount(0);
+        App.getInstance().executionsHandler.executionsList.postValue(null);
+    }
+
+    private void showList() {
+        Log.d("surprise", "showList: " + mExecutions);
     }
 
     private void showDiscountDialog() {
@@ -137,6 +190,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         Log.d("surprise", "setDiscount: set discount " + which);
         mMyViewModel.applyDiscount(which);
         mDiscountSelected = which;
+        //mAdapter.notifyDataSetChanged();
+    }
+
+
+    private void setContrast(int which) {
+        mContrastCost = mMyViewModel.applyContrast(which);
+        mContrastSelected = which;
+        // оповещу об изменении цены
+        App.getInstance().executionsHandler.executionsList.postValue(App.getInstance().executionsHandler.executionsList.getValue());
     }
 
     @Override

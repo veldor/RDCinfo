@@ -132,25 +132,27 @@ public class ExecutionsAdapter extends RecyclerView.Adapter<ExecutionsAdapter.Vi
         }
 
         void bind(Execution execution) {
+            HashMap<String, Execution> selected = App.getInstance().executionsHandler.executionsList.getValue();
             mBinding.setExecution(execution);
             mBinding.executePendingBindings();
             View container = mBinding.getRoot();
-            CheckBox checkbox = container.findViewById(R.id.selectExecutionCheckbox);
-            checkbox.setOnCheckedChangeListener(null);
+            final CheckBox[] checkbox = {container.findViewById(R.id.selectExecutionCheckbox)};
+            checkbox[0].setOnClickListener(null);
             // проверю, нет ли обследования в списке
             final String name = execution.name;
-            if(mSelected != null && name != null && mSelected.containsKey(execution.name)){
-                checkbox.setChecked(true);
+            if(selected == null){
+            }
+            if(selected != null && name != null && selected.containsKey(execution.name)){
+                checkbox[0].setChecked(true);
             }
             else{
-                checkbox.setChecked(false);
+                checkbox[0].setChecked(false);
             }
-            checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            checkbox[0].setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Log.d("surprise", "onCheckedChanged: checkbox clicked " + name + " is checked " + isChecked);
-                    if(isChecked){
-                        // добавлю обследование в список
+                public void onClick(View v) {
+                    CheckBox checkbox = (CheckBox) v;
+                    if(checkbox.isChecked()){
                         App.getInstance().executionsHandler.addExecutionByName(name);
                     }
                     else{

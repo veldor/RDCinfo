@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_search"
+        android:title="@android:string/search_go"
+        android:icon="@drawable/ic_search_white_24dp"
+        yourapp:showAsAction="ifRoom|collapseActionView"
+        yourapp:actionViewClass="android.support.v7.widget.SearchView" />
+    <item
+        android:id="@+id/action_discount"
+        android:title="@string/discount_name"
+        android:icon="@drawable/discount_icon"
+        yourapp:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/action_contrast"
+        android:title="@string/contrast_name"
+        android:icon="@drawable/syringe"
+        yourapp:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/action_show"
+        android:title="test"
+        android:icon="@drawable/ic_eye_24dp"
+        yourapp:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/action_cancel"
+        android:title="@string/cancel_selected_message"
+        android:icon="@drawable/cancel_24dp"
+        yourapp:showAsAction="ifRoom|collapseActionView" />
+</menu>

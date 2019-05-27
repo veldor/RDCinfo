@@ -16,7 +16,6 @@ class DiscountHandler {
             ArrayList<Execution> newExecutionsList = new ArrayList<>();
             if (which > 0) {
                 int discountPercent = which * 5;
-                Log.d("surprise", "applyDiscount: discount percent is " + discountPercent);
                 for (Execution ex : executionsList) {
                     if(ex.type == Execution.TYPE_SIMPLE){
                         int cost = (Integer.valueOf(ex.summ) / 100) * (100 - discountPercent);
@@ -38,8 +37,10 @@ class DiscountHandler {
                 for (Execution ex : executionsList) {
                     if(ex.type == Execution.TYPE_SIMPLE) {
                         Execution newExecution = new Execution();
+                        newExecution.id = ex.id;
                         newExecution.name = ex.name;
                         newExecution.summ = ex.summ;
+                        newExecution.type = ex.type;
                         newExecution.summWithDiscount = ex.summ;
                         newExecution.price = CashHandler.toRubles(newExecution.summ);
                         newExecutionsList.add(newExecution);

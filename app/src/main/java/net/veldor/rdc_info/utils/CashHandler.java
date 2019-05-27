@@ -6,4 +6,9 @@ public class CashHandler {
         String rubles = inputString.substring(0, inputString.length() - 2);
         return rubles + " \u20BD";
     }
+    public static String toRubles(int summ){
+        // разобью строку на рубли и копейки
+        int rubles = summ / 100;
+        return rubles + " \u20BD";
+    }
 }

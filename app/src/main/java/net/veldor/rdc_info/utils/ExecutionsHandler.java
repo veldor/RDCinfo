@@ -22,7 +22,6 @@ public class ExecutionsHandler {
                 list.put(executionName, elem);
             }
             executionsList.postValue(list);
-            Log.d("surprise", "addExecutionByName: " + list.size());
         }
 
     }
