@@ -1,20 +1,22 @@
 package net.veldor.rdc_info.adapters;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.android.databinding.library.baseAdapters.BR;
+
 import net.veldor.rdc_info.App;
 import net.veldor.rdc_info.R;
+import net.veldor.rdc_info.databinding.ExecutionGridItemBinding;
 import net.veldor.rdc_info.databinding.ExecutionLinearItemBinding;
 import net.veldor.rdc_info.subclasses.Execution;
 
@@ -23,6 +25,7 @@ import java.util.HashMap;
 
 public class ExecutionsAdapter extends RecyclerView.Adapter<ExecutionsAdapter.ViewHolder> implements Filterable {
 
+    public boolean isGrid;
     private ArrayList<Execution> mExecutions;
     private ArrayList<Execution> mFilteredExecutions;
     private LayoutInflater mLayoutInflater;
@@ -42,8 +45,15 @@ public class ExecutionsAdapter extends RecyclerView.Adapter<ExecutionsAdapter.Vi
         if (mLayoutInflater == null) {
             mLayoutInflater = LayoutInflater.from(viewGroup.getContext());
         }
-        ExecutionLinearItemBinding binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.execution_linear_item, viewGroup, false);
-        return new ViewHolder(binding);
+        if(isGrid){
+            ExecutionGridItemBinding binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.execution_grid_item, viewGroup, false);
+            return new ViewHolder(binding);
+        }
+        else{
+            ExecutionLinearItemBinding binding = DataBindingUtil.inflate(mLayoutInflater, R.layout.execution_linear_item, viewGroup, false);
+            return new ViewHolder(binding);
+        }
+
     }
 
     @Override
@@ -120,7 +130,7 @@ public class ExecutionsAdapter extends RecyclerView.Adapter<ExecutionsAdapter.Vi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        private final ExecutionLinearItemBinding mBinding;
+        private final ViewDataBinding mBinding;
         private final HashMap<String, Execution> mSelected;
 
         ViewHolder(@NonNull ExecutionLinearItemBinding binding) {
@@ -130,10 +140,17 @@ public class ExecutionsAdapter extends RecyclerView.Adapter<ExecutionsAdapter.Vi
             // получу список выбранных обследований
             mSelected = App.getInstance().executionsHandler.executionsList.getValue();
         }
+        ViewHolder(@NonNull ExecutionGridItemBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
+
+            // получу список выбранных обследований
+            mSelected = App.getInstance().executionsHandler.executionsList.getValue();
+        }
 
         void bind(Execution execution) {
             HashMap<String, Execution> selected = App.getInstance().executionsHandler.executionsList.getValue();
-            mBinding.setExecution(execution);
+            mBinding.setVariable(BR.execution, execution);
             mBinding.executePendingBindings();
             View container = mBinding.getRoot();
             final CheckBox[] checkbox = {container.findViewById(R.id.selectExecutionCheckbox)};

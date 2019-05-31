@@ -8,7 +8,7 @@ import net.veldor.rdc_info.subclasses.PriceInfo;
 
 import java.util.ArrayList;
 
-class DiscountHandler {
+public class DiscountHandler {
     static void applyDiscount(int which) {
         PriceInfo priceInfo = App.getInstance().executionsData.getValue();
         if (priceInfo != null) {
@@ -23,6 +23,7 @@ class DiscountHandler {
                         Execution newExecution = new Execution();
                         newExecution.id = ex.id;
                         newExecution.name = ex.name;
+                        newExecution.shortName = ex.shortName;
                         newExecution.summ = ex.summ;
                         newExecution.type = ex.type;
                         newExecution.summWithDiscount = String.valueOf(cost);
@@ -39,6 +40,7 @@ class DiscountHandler {
                         Execution newExecution = new Execution();
                         newExecution.id = ex.id;
                         newExecution.name = ex.name;
+                        newExecution.shortName = ex.shortName;
                         newExecution.summ = ex.summ;
                         newExecution.type = ex.type;
                         newExecution.summWithDiscount = ex.summ;
@@ -56,7 +58,7 @@ class DiscountHandler {
         }
     }
 
-    static int countDiscount(String cost, int discount){
+    public static int countDiscount(String cost, int discount){
         return (Integer.valueOf(cost) / 100) * (100 - discount);
     }
 

@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">RDC-info</string>
+    <string name="discount_name">Discount</string>
+    <string name="contrast_name">Contrast</string>
+    <string name="discount_size_message">Discount size</string>
+    <string name="cancel_selected_message">cancel selected</string>
+    <string name="contrast_size_message">Contrast volume</string>
+    <string name="cost_details_message">Details</string>
+    <string name="reset_message">reset</string>
+    <string name="contrast_details_message">%s: %s</string>
+    <string name="discount_details_message">Discount is %d%%</string>
+    <string name="remove_button_text">Remove</string>
+    <string name="pro">Pro</string>
+    <string name="anesthesia_menu_message">Anesthesia</string>
+    <string name="print_menu_message">Print list</string>
+    <string name="print_list_message">Print price: %s</string>
+    <string name="anesthesia_size_message">Anesthesia time</string>
+    <string name="no_anesthesia_item">No anesthesia</string>
+    <string name="anesthesia_details_message">Anesthesia: %s: %s</string>
+</resources>

@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import net.veldor.rdc_info.App;
+import net.veldor.rdc_info.subclasses.Anesthesia;
 import net.veldor.rdc_info.subclasses.Contrast;
 import net.veldor.rdc_info.subclasses.Execution;
 import net.veldor.rdc_info.subclasses.PriceInfo;
@@ -52,5 +53,26 @@ public class CostViewModel extends ViewModel {
             }
         }
         return r;
+    }
+    public int applyAnesthesia(int which) {
+        // получу данные о стоимости
+        int r = 0;
+        if(which > 0){
+            // получу сведения о контрасте
+            PriceInfo priceInfo = App.getInstance().executionsData.getValue();
+            if(priceInfo != null){
+                Anesthesia cost = priceInfo.anesthesia.get(which - 1);
+                r = Integer.valueOf(cost.summ);
+            }
+        }
+        return r;
+    }
+
+    public Integer getPrintPrice() {
+        PriceInfo priceInfo = App.getInstance().executionsData.getValue();
+        if(priceInfo != null){
+            return Integer.valueOf(priceInfo.printPrice);
+        }
+        return 0;
     }
 }

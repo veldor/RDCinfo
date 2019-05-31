@@ -62,222 +62,266 @@
 
     <price
         name="МРТ головного мозга"
+        short_name="ГM"
         id="1"
         price="345000"
         type="execution" />
     <price
         name="МРТ головного мозга на исследование рассеянного склероза"
+        short_name="ГМ РС"
         id="2"
         price="430000"
         type="execution" />
     <price
         name="МРТ головного мозга для исключения вазоневрального конфликта"
+        short_name="ГМ ВК"
         id="3"
         price="370000"
         type="execution" />
     <price
         name="МРТ гипофиза"
+        short_name="ГИП"
         id="4"
         price="320000"
         type="execution" />
     <price
         name="МРТ орбит"
+        short_name="ОРБ"
         id="5"
         price="320000"
         type="execution" />
     <price
         name="МР ангиография вен головного мозга"
+        short_name="ГМ АРТ"
         id="6"
         price="350000"
         type="execution" />
     <price
         name="МР ангиография артерий головного мозга"
+        short_name="ГМ ВЕН"
         id="7"
         price="350000"
         type="execution" />
     <price
         name="МРТ придаточных пазух носа и носоглотки"
+        short_name="ГМ ППН"
         id="8"
         price="325000"
         type="execution" />
     <price
         name="МРТ грудной клетки"
+        short_name="ГК"
         id="9"
         price="320000"
         type="execution" />
     <price
         name="МРТ органов средостения"
+        short_name="СРД"
         id="10"
         price="340000"
         type="execution" />
     <price
         name="МРТ брюшной полости"
+        short_name="БП"
         id="11"
         price="460000"
         type="execution" />
     <price
         name="МРТ забрюшинного пространства"
+        short_name="ЗП"
         id="12"
         price="410000"
         type="execution" />
     <price
         name="МРТ органов малого таза"
+        short_name="МТ"
         id="13"
         price="480000"
         type="execution" />
     <price
         name="МРТ лонного сочленения"
+        short_name="ЛС"
         id="14"
         price="450000"
         type="execution" />
     <price
         name="МРТ простаты"
+        short_name="ПРС"
         id="15"
         price="480000"
         type="execution" />
     <price
         name="МРТ мягких тканей шеи"
+        short_name="МТШ"
         id="16"
         price="490000"
         type="execution" />
     <price
         name="МРТ околоушной железы"
+        short_name="СЛ Ж"
         id="17"
         price="420000"
         type="execution" />
     <price
         name="МРТ мягких тканей	"
+        short_name="МЯГ"
         id="18"
         price="490000"
         type="execution" />
     <price
         name="МРТ молочных желез"
+        short_name="МОЛ"
         id="19"
         price="610000"
         type="execution" />
     <price
         name="МРТ наружных половых органов"
+        short_name="НПО"
         id="20"
         price="470000"
         type="execution" />
     <price
         name="МРТ краниовертебрального перехода"
+        short_name="КВП"
         id="21"
         price="345000"
         type="execution" />
     <price
         name="МРТ шейного отдела позвоночника"
+        short_name="ШОП"
         id="22"
         price="345000"
         type="execution" />
     <price
         name="МРТ грудного отдела позвоночника"
+        short_name="ГОП"
         id="23"
         price="345000"
         type="execution" />
     <price
         name="МРТ поясничного отдела позвоночника"
+        short_name="ПОП"
         id="24"
         price="345000"
         type="execution" />
     <price
         name="МРТ пояснично-крестцового отдела позвоночника"
+        short_name="ПКОП"
         id="25"
         price="345000"
         type="execution" />
     <price
         name="МРТ копчика"
+        short_name="КОП"
         id="26"
         price="220000"
         type="execution" />
     <price
         name="МРТ илеосакрального сочленения (крестцово-подвздошные суставы)"
+        short_name="ИСС"
         id="27"
         price="410000"
         type="execution" />
     <price
         name="МР ангиография артерий шеи"
+        short_name="АРТ ШЕИ"
         id="28"
         price="330000"
         type="execution" />
     <price
         name="МРТ левого плечевого сустава"
+        short_name="ПЛ Л"
         id="29"
         price="430000"
         type="execution" />
     <price
         name="МРТ правого плечевого сустава"
+        short_name="ПЛ П"
         id="30"
         price="430000"
         type="execution" />
     <price
         name="МРТ левого локтевого сустава"
+        short_name="ЛОК Л"
         id="31"
         price="430000"
         type="execution" />
     <price
         name="МРТ правого локтевого сустава"
+        short_name="ЛОК П"
         id="32"
         price="430000"
         type="execution" />
     <price
         name="МРТ левого коленного сустава"
+        short_name="КОЛ Л"
         id="33"
         price="430000"
         type="execution" />
     <price
         name="МРТ правого коленного сустава"
+        short_name="КОЛ П"
         id="34"
         price="430000"
         type="execution" />
     <price
         name="МРТ левого голеностопного сустава"
+        short_name="ГОЛ Л"
         id="35"
         price="450000"
         type="execution" />
     <price
         name="МРТ правого голеностопного сустава"
+        short_name="ГОЛ П"
         id="36"
         price="450000"
         type="execution" />
     <price
         name="МРТ левого лучезапястного сустава"
+        short_name="ЛУЧ Л"
         id="37"
         price="450000"
         type="execution" />
     <price
         name="МРТ правого лучезапястного сустава"
+        short_name="ЛУЧ П"
         id="38"
         price="450000"
         type="execution" />
     <price
         name="МРТ височно-нижнечелюстных суставов"
+        short_name="ВНЧС"
         id="39"
         price="450000"
         type="execution" />
     <price
         name="МРТ тазобедренных суставов"
+        short_name="ТС"
         id="40"
         price="450000"
         type="execution" />
     <price
         name="МРТ левой кисти"
+        short_name="КИС Л"
         id="41"
         price="480000"
         type="execution" />
     <price
         name="МРТ правой кисти"
+        short_name="КИС П"
         id="42"
         price="480000"
         type="execution" />
     <price
         name="МРТ сердца"
+        short_name="СЕР"
         id="43"
         price="600000"
         type="execution" />
     <complexes>
         <complex id="44"
             name="МРТ комплексное исследование всего тела"
+            short_name="ВСЁ"
             price="3030300">
             <execution name="МРТ головного мозга" />
             <execution name="МР ангиография артерий головного мозга" />
@@ -292,9 +336,11 @@
         </complex>
         <complex id="45"
             name="Онкоскрининг"
+            short_name="ОНК"
             price="1400000" />
         <complex id="44"
             name="МРТ головного мозга + гипофиз"
+            short_name="ГМ + ГИП"
             price="532000">
             <execution name="МРТ головного мозга" />
             <execution name="МРТ гипофиза" />
@@ -302,24 +348,28 @@
 
         <complex id="46"
             name="МРТ головного мозга + орбиты"
+            short_name="ГМ + ОРБ"
             price="532000">
             <execution name="МРТ головного мозга" />
             <execution name="МРТ орбит" />
         </complex>
         <complex id="47"
             name="МРТ головного мозга + ангиография венозных синусов"
+            short_name="ГМ + ВЕН"
             price="590800">
             <execution name="МРТ головного мозга" />
             <execution name="МР ангиография вен головного мозга" />
         </complex>
         <complex id="48"
             name="МРТ головного мозга + ангиография артерий головного мозга"
+            short_name="ГМ + АРТ"
             price="590800">
             <execution name="МРТ головного мозга" />
             <execution name="МР ангиография артерий головного мозга" />
         </complex>
         <complex id="49"
             name="МРТ головного мозга + ангиография артерий + ангиография венозных синусов головного мозга"
+            short_name="ГМ + ВЕН + АРТ"
             price="888300">
             <execution name="МРТ головного мозга" />
             <execution name="МР ангиография артерий головного мозга" />
@@ -327,24 +377,28 @@
         </complex>
         <complex id="50"
             name="МРТ головного мозга + краниовертебральный переход"
+            short_name="ГМ + КВП"
             price="586500">
             <execution name="МРТ головного мозга" />
             <execution name="МРТ краниовертебрального перехода" />
         </complex>
         <complex id="51"
             name="МРТ головного мозга + придаточные пазухи носа"
+            short_name="ГМ + ППН"
             price="536000">
             <execution name="МРТ головного мозга" />
             <execution name="МРТ придаточных пазух носа и носоглотки" />
         </complex>
         <complex id="52"
             name="МРТ головного мозга + шейный отдел позвоночника"
+            short_name="ГМ + ШОП"
             price="586500">
             <execution name="МРТ головного мозга" />
             <execution name="МРТ шейного отдела позвоночника" />
         </complex>
         <complex id="53"
             name="МРТ брюшной полости + забрюшинное пространство + малый таз"
+            short_name="БП + ЗП + МТ"
             price="1080000">
             <execution name="МРТ брюшной полости" />
             <execution name="МРТ забрюшинного пространства" />
@@ -352,41 +406,48 @@
         </complex>
         <complex id="54"
             name="МРТ брюшной полости + малый таз"
+            short_name="БП + МТ"
             price="799000">
             <execution name="МРТ брюшной полости" />
             <execution name="МРТ органов малого таза" />
         </complex>
         <complex id="55"
             name="МРТ брюшной полости + забрюшинное пространство"
+            short_name="БП + ЗП"
             price="609000">
             <execution name="МРТ брюшной полости" />
             <execution name="МРТ забрюшинного пространства" />
         </complex>
         <complex id="56"
             name="МРТ забрюшинного пространства + малый таз"
+            short_name="ЗП + МТ"
             price="756500">
             <execution name="МРТ забрюшинного пространства" />
             <execution name="МРТ органов малого таза" />
         </complex>
         <complex id="57"
             name="МРТ малого таза + пояснично-крестцового отдела позвоночника"
+            short_name="МТ + ПКОП"
             price="701300">
             <execution name="МРТ органов малого таза" />
             <execution name="МРТ пояснично-крестцового отдела позвоночника" />
         </complex>
         <complex id="58"
             name="МРТ брюшной полости + холангиография"
+            short_name="БП + ХОЛ"
             price="605600">
             <execution name="МРТ брюшной полости" />
         </complex>
         <complex id="59"
             name="МРТ забрюшинного пространства + урография"
+            short_name="ЗП + УР"
             price="568000">
             <execution name="МРТ забрюшинного пространства" />
             <execution name="МРТ урография" />
         </complex>
         <complex id="60"
             name="МРТ брюшной полости + забрюшинное пространство + холангиография"
+            short_name="БП + ХОЛ + УР"
             price="875300">
             <execution name="МРТ брюшной полости" />
             <execution name="МРТ забрюшинного пространства" />
@@ -394,6 +455,7 @@
         </complex>
         <complex id="61"
             name="МРТ брюшной полости + забрюшинное пространство + урография"
+            short_name="БП + ЗП + УР"
             price="877500">
             <execution name="МРТ брюшной полости" />
             <execution name="МРТ забрюшинного пространства" />
@@ -401,6 +463,7 @@
         </complex>
         <complex id="62"
             name="МРТ брюшной полости + забрюшинное пространство + холангиография + урография"
+            short_name="БП + ЗП + УР + ХОЛ"
             price="953600">
             <execution name="МРТ брюшной полости" />
             <execution name="МРТ забрюшинного пространства" />
@@ -408,6 +471,7 @@
         </complex>
         <complex id="63"
             name="МРТ всего позвоночника (ШОП+ГОП+ПКОП)"
+            short_name="ШОП + ГОП + ПКОП"
             price="879800">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МРТ грудного отдела позвоночника" />
@@ -415,6 +479,7 @@
         </complex>
         <complex id="64"
             name="МРТ всего позвоночника с копчиком (ШОП+ГОП+ПКОП+копчик)"
+            short_name="ШОП + ГОП + ПКОП + КОП"
             price="918000">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МРТ грудного отдела позвоночника" />
@@ -423,60 +488,70 @@
         </complex>
         <complex id="65"
             name="МРТ шейного отдела позвоночника + поясничный отдел позвоночника"
+            short_name="ШОП + ПКОП"
             price="586500">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МРТ пояснично-крестцового отдела позвоночника" />
         </complex>
         <complex id="66"
             name="МРТ шейного отдела позвоночника + грудной отдел позвоночника"
+            short_name="ШОП + ГОП"
             price="586500">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МРТ грудного отдела позвоночника" />
         </complex>
         <complex id="67"
             name="МРТ грудного отдела позвоночника + поясничный отдел позвоночника"
+            short_name="ГОП + ПКОП"
             price="586500">
             <execution name="МРТ грудного отдела позвоночника" />
             <execution name="МРТ пояснично-крестцового отдела позвоночника" />
         </complex>
         <complex id="68"
             name="МРТ пояснично-крестцового отдела позвоночника + илеасакральные сочленения"
+            short_name="ПКОП + ИСС"
             price="604000">
             <execution name="МРТ пояснично-крестцового отдела позвоночника" />
             <execution name="МРТ илеосакрального сочленения (крестцово-подвздошные суставы)" />
         </complex>
         <complex id="69"
             name="МРТ шейного отдела позвоночника + краниовертебральный переход"
+            short_name="ШОП + КВП"
             price="586500">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МРТ краниовертебрального перехода" />
         </complex>
         <complex id="70"
             name="МРТ шейного отдела позвоночника + плечевой сустав"
+            short_name="ШОП + ПЛ"
             price="658800">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МРТ плечевого сустава" />
         </complex>
         <complex id="71"
             name="МРТ пояснично-крестцового отдела позвоночника + копчик"
+            short_name="ПКОП + КОП"
             price="390000">
             <execution name="МРТ пояснично-крестцового отдела позвоночника" />
             <execution name="МРТ копчика" />
         </complex>
         <complex id="72"
             name="МРТ пояснично-крестцового отдела позвоночника + тазобедренные суставы"
+            short_name="ПКОП + ТС"
             price="675800">
             <execution name="МРТ пояснично-крестцового отдела позвоночника" />
             <execution name="МРТ тазобедренных суставов" />
         </complex>
         <complex id="73"
             name="МРТ шейного отдела позвоночника + ангиография артерий шеи"
+            short_name="ШОП + АРТ"
             price="573800">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МР ангиография артерий шеи" />
         </complex>
         <complex id="74"
             name="МРТ шейного отдела позвоночника + мягкие ткани шеи"
+            short_name="ШОП + МТШ"
             price="709800">
             <execution name="МРТ шейного отдела позвоночника" />
             <execution name="МРТ мягких тканей шеи" />

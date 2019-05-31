@@ -6,4 +6,16 @@
     <string name="discount_size_message">Размер скидки</string>
     <string name="cancel_selected_message">Сбросить</string>
     <string name="contrast_size_message">Объём вводимого контрастного вещества</string>
+    <string name="cost_details_message">Детали</string>
+    <string name="reset_message">Сбросить</string>
+    <string name="contrast_details_message">%s: %s</string>
+    <string name="discount_details_message">Скидка %d%%</string>
+    <string name="remove_button_text">Убрать</string>
+    <string name="pro">Pro</string>
+    <string name="anesthesia_menu_message">Наркоз</string>
+    <string name="print_menu_message">Печатать снимок</string>
+    <string name="print_list_message">Печать плёнки: %s</string>
+    <string name="anesthesia_size_message">Длительность наркоза</string>
+    <string name="no_anesthesia_item">Без наркоза</string>
+    <string name="anesthesia_details_message">Наркоз: %s: %s</string>
 </resources>
