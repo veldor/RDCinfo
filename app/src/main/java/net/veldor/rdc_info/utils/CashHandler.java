@@ -11,4 +11,9 @@ public class CashHandler {
         int rubles = summ / 100;
         return rubles + " \u20BD";
     }
+
+    public static int countPercentDifference(int fullSumm, int priceSumm) {
+        // найду разницу в %
+        return ((fullSumm - priceSumm) / ((fullSumm + priceSumm) / 2)) * 100;
+    }
 }

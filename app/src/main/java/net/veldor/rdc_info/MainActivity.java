@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import net.veldor.rdc_info.adapters.ComplexesAdapter;
 import net.veldor.rdc_info.adapters.ExecutionsAdapter;
 import net.veldor.rdc_info.subclasses.Anesthesia;
 import net.veldor.rdc_info.subclasses.Contrast;
@@ -38,7 +39,6 @@ import net.veldor.rdc_info.utils.DiscountHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private Integer mPrintPrice = 0;
     private AlertDialog.Builder mAnesthesiaDialog;
     private int mAnesthesiaCost = 0;
+    private AlertDialog.Builder mFoundedComplexesDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,31 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 calculateTotal(mExecutions);
             }
         });
+
+        // добавлю отслеживание найденного комплекса обследований
+        LiveData<ArrayList<Execution>> foundedComplexes = mMyViewModel.getFoundedComplexes();
+        foundedComplexes.observe(this, new Observer<ArrayList<Execution>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Execution> executions) {
+                if(executions != null && !executions.isEmpty()){
+                    showFoundedComplexes(executions);
+                }
+            }
+        });
+    }
+
+    private void showFoundedComplexes(ArrayList<Execution> executions) {
+        if(mFoundedComplexesDialogBuilder == null){
+            mFoundedComplexesDialogBuilder = new AlertDialog.Builder(this);
+            mFoundedComplexesDialogBuilder.setTitle("Найдены комплексные обследования")
+                    .setPositiveButton("Не интересует", null);
+        }
+        LinearLayout view = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_show_complexes, null, false);
+        RecyclerView recycler = view.findViewById(R.id.complexesList);
+        ComplexesAdapter adapter = new ComplexesAdapter(executions);
+        recycler.setAdapter(adapter);
+        recycler.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        mFoundedComplexesDialogBuilder.setView(view).create().show();
     }
 
     private void calculateTotal(HashMap<String, Execution> executions) {
@@ -360,7 +386,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         mAnesthesiaDialog.create().show();
     }
-
 
     private void dropSelected() {
         // сброшу выбранные обследования

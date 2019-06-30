@@ -9,6 +9,7 @@ import net.veldor.rdc_info.subclasses.Contrast;
 import net.veldor.rdc_info.subclasses.Execution;
 import net.veldor.rdc_info.subclasses.PriceInfo;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -74,5 +75,9 @@ public class CostViewModel extends ViewModel {
             return Integer.valueOf(priceInfo.printPrice);
         }
         return 0;
+    }
+
+    public LiveData<ArrayList<Execution>> getFoundedComplexes() {
+        return App.getInstance().executionsHandler.foundedComplexes;
     }
 }
