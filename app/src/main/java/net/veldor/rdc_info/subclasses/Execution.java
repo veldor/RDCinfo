@@ -11,6 +11,7 @@ public class Execution {
     public static final int TYPE_COMPLEX = 2;
     public static final String ATTR_SHORT_NAME = "short_name";
     public static final String ATTR_TIME = "time";
+    public static final String ATTR_VOLUME = "volume";
 
     public int id;
     public String name;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">РДЦ</string>
+    <string name="app_name">РДЦ калькулятор</string>
     <string name="discount_name">Скидка</string>
     <string name="contrast_name">Контраст</string>
     <string name="discount_size_message">Размер скидки</string>
@@ -11,11 +11,12 @@
     <string name="contrast_details_message">%s: %s</string>
     <string name="discount_details_message">Скидка %d%%</string>
     <string name="remove_button_text">Убрать</string>
-    <string name="pro">Pro</string>
+    <string name="pro">Режим \"Профи\"</string>
     <string name="anesthesia_menu_message">Наркоз</string>
     <string name="print_menu_message">Печатать снимок</string>
     <string name="print_list_message">Печать плёнки: %s</string>
     <string name="anesthesia_size_message">Длительность наркоза</string>
     <string name="no_anesthesia_item">Без наркоза</string>
     <string name="anesthesia_details_message">Наркоз: %s: %s</string>
+    <string name="share_message">Поделиться</string>
 </resources>

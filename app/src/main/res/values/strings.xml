@@ -17,4 +17,5 @@
     <string name="anesthesia_size_message">Anesthesia time</string>
     <string name="no_anesthesia_item">No anesthesia</string>
     <string name="anesthesia_details_message">Anesthesia: %s: %s</string>
+    <string name="share_message">Share</string>
 </resources>

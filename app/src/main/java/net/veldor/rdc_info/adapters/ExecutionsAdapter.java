@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -131,24 +132,17 @@ public class ExecutionsAdapter extends RecyclerView.Adapter<ExecutionsAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder{
         private final ViewDataBinding mBinding;
-        private final HashMap<String, Execution> mSelected;
 
         ViewHolder(@NonNull ExecutionLinearItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
-
-            // получу список выбранных обследований
-            mSelected = App.getInstance().executionsHandler.executionsList.getValue();
         }
         ViewHolder(@NonNull ExecutionGridItemBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
-
-            // получу список выбранных обследований
-            mSelected = App.getInstance().executionsHandler.executionsList.getValue();
         }
 
-        void bind(Execution execution) {
+        void bind(final Execution execution) {
             HashMap<String, Execution> selected = App.getInstance().executionsHandler.executionsList.getValue();
             mBinding.setVariable(BR.execution, execution);
             mBinding.executePendingBindings();
@@ -157,14 +151,23 @@ public class ExecutionsAdapter extends RecyclerView.Adapter<ExecutionsAdapter.Vi
             checkbox[0].setOnClickListener(null);
             // проверю, нет ли обследования в списке
             final String name = execution.name;
-            if(selected == null){
-            }
             if(selected != null && name != null && selected.containsKey(execution.name)){
                 checkbox[0].setChecked(true);
             }
             else{
                 checkbox[0].setChecked(false);
             }
+            container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(isGrid){
+                        Toast.makeText(App.getInstance(), execution.name, Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        checkbox[0].performClick();
+                    }
+                }
+            });
             checkbox[0].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -29,15 +29,26 @@ public class CostViewModel extends ViewModel {
         for (Execution e :
                 values) {
             // посчитаю сумму со скидкой
-            if(e.type == Execution.TYPE_SIMPLE){
-                totalSumm += DiscountHandler.countDiscount(e.summ, discount);
-            }
-            else{
+            if (e.type == Execution.TYPE_SIMPLE) {
+                boolean inList = false;
+                // проверю, нет ли данного обследования в списке комплексов
+                for (Execution e2 :
+                        values) {
+                    if (e2.type == Execution.TYPE_COMPLEX && e2.innerExecutions.containsKey(e.name)) {
+                        // если обследование в списке- не считаю его в общей сумме
+                        inList = true;
+                    }
+                }
+                if (!inList) {
+                    totalSumm += DiscountHandler.countDiscount(e.summ, discount);
+                }
+
+            } else {
                 totalSumm += Integer.valueOf(e.summ);
             }
 
         }
-        if(totalSumm > 0)
+        if (totalSumm > 0)
             return totalSumm;
         return 0;
     }
@@ -45,23 +56,24 @@ public class CostViewModel extends ViewModel {
     public int applyContrast(int which) {
         // получу данные о стоимости
         int r = 0;
-        if(which > 0){
+        if (which > 0) {
             // получу сведения о контрасте
             PriceInfo priceInfo = App.getInstance().executionsData.getValue();
-            if(priceInfo != null){
+            if (priceInfo != null) {
                 Contrast cost = priceInfo.contrasts.get(which - 1);
                 r = Integer.valueOf(cost.summ);
             }
         }
         return r;
     }
+
     public int applyAnesthesia(int which) {
         // получу данные о стоимости
         int r = 0;
-        if(which > 0){
+        if (which > 0) {
             // получу сведения о контрасте
             PriceInfo priceInfo = App.getInstance().executionsData.getValue();
-            if(priceInfo != null){
+            if (priceInfo != null) {
                 Anesthesia cost = priceInfo.anesthesia.get(which - 1);
                 r = Integer.valueOf(cost.summ);
             }
@@ -71,7 +83,7 @@ public class CostViewModel extends ViewModel {
 
     public Integer getPrintPrice() {
         PriceInfo priceInfo = App.getInstance().executionsData.getValue();
-        if(priceInfo != null){
+        if (priceInfo != null) {
             return Integer.valueOf(priceInfo.printPrice);
         }
         return 0;

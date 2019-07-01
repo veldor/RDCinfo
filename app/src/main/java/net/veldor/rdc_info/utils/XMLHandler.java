@@ -95,6 +95,7 @@ public class XMLHandler {
                     Contrast c = new Contrast();
                     c.name = show.getAttribute(Execution.ATTR_NAME);
                     c.summ = show.getAttribute(Execution.ATTR_PRICE);
+                    c.volume = show.getAttribute(Execution.ATTR_VOLUME);
                     pi.contrasts.add(c);
                 }
             }

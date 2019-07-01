@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -16,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,8 +25,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.veldor.rdc_info.adapters.ComplexesAdapter;
 import net.veldor.rdc_info.adapters.ExecutionsAdapter;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private AlertDialog.Builder mAnesthesiaDialog;
     private int mAnesthesiaCost = 0;
     private AlertDialog.Builder mFoundedComplexesDialogBuilder;
+    public static AlertDialog mFoundedComplexesDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         foundedComplexes.observe(this, new Observer<ArrayList<Execution>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Execution> executions) {
-                if(executions != null && !executions.isEmpty()){
+                if (executions != null && !executions.isEmpty()) {
                     showFoundedComplexes(executions);
                 }
             }
@@ -125,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void showFoundedComplexes(ArrayList<Execution> executions) {
-        if(mFoundedComplexesDialogBuilder == null){
+        if (mFoundedComplexesDialogBuilder == null) {
             mFoundedComplexesDialogBuilder = new AlertDialog.Builder(this);
             mFoundedComplexesDialogBuilder.setTitle("Найдены комплексные обследования")
                     .setPositiveButton("Не интересует", null);
@@ -135,7 +138,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ComplexesAdapter adapter = new ComplexesAdapter(executions);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        mFoundedComplexesDialogBuilder.setView(view).create().show();
+        mFoundedComplexesDialog = mFoundedComplexesDialogBuilder.setView(view).create();
+        mFoundedComplexesDialog.show();
     }
 
     private void calculateTotal(HashMap<String, Execution> executions) {
@@ -172,76 +176,184 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void showSelectedDetails() {
         if (mTotalSumm > 0) {
+            int discountSumm = 0;
+            String styledText;
+            TextView targetView;
+            final StringBuilder shareTextBuilder = new StringBuilder();
+            shareTextBuilder.append("Детализация услуг РДЦ\n");
             LayoutInflater inflater = getLayoutInflater();
-            ScrollView view = (ScrollView) inflater.inflate(R.layout.details_dialog, mRootView, false);
-            TextView targetView = view.findViewById(R.id.total_summ);
-            targetView.setText(String.format(Locale.ENGLISH, "Итого: %s", CashHandler.toRubles(mTotalSumm)));
-            // если назначена скидка- выведу её
-            targetView = view.findViewById(R.id.discount_text);
-            if (mDiscountSelected > 0) {
-                targetView.setText(String.format(Locale.ENGLISH, getApplicationContext().getString(R.string.discount_details_message), mDiscountSelected * 5));
-            } else {
-                targetView.setVisibility(View.GONE);
-            }
-            targetView = view.findViewById(R.id.print_text);
-            if(mPrintPrice > 0){
-                targetView.setText(String.format(Locale.ENGLISH, getApplicationContext().getString(R.string.print_list_message), CashHandler.toRubles(mPrintPrice)));
-            } else {
-                targetView.setVisibility(View.GONE);
-            }
+            LinearLayout view = (LinearLayout) inflater.inflate(R.layout.details_dialog, mRootView, false);
 
-            targetView = view.findViewById(R.id.contrast_text);
-            if (mContrastSelected > 0) {
-                PriceInfo executionsInfo = App.getInstance().executionsData.getValue();
-                if (executionsInfo != null) {
-                    Contrast contrastsInfo = executionsInfo.contrasts.get(mContrastSelected - 1);
-                    targetView.setText(String.format(Locale.ENGLISH, getApplicationContext().getString(R.string.contrast_details_message), contrastsInfo.name, CashHandler.toRubles(contrastsInfo.summ)));
-                }
-            } else {
-                targetView.setVisibility(View.GONE);
-            }
-            targetView = view.findViewById(R.id.anesthesia_text);
-            if (mAnesthesiaSelected > 0) {
-                PriceInfo executionsInfo = App.getInstance().executionsData.getValue();
-                if (executionsInfo != null) {
-                    Anesthesia anesthesia = executionsInfo.anesthesia.get(mAnesthesiaSelected - 1);
-                    targetView.setText(String.format(Locale.ENGLISH, getApplicationContext().getString(R.string.anesthesia_details_message), anesthesia.name, CashHandler.toRubles(anesthesia.summ)));
-                }
-            } else {
-                targetView.setVisibility(View.GONE);
-            }
             // теперь добавлю значение для каждого выбранного обследования
             HashMap<String, Execution> list = App.getInstance().executionsHandler.executionsList.getValue();
             if (list != null) {
                 LinearLayout root = view.findViewById(R.id.executions_block);
                 Collection<Execution> iterable = list.values();
+                int priceWithDiscount;
                 for (final Execution item :
                         iterable) {
-                    CardView ex = (CardView) inflater.inflate(R.layout.execution_item, root, false);
-                    TextView executionNameView = ex.findViewById(R.id.execution_name);
-                    executionNameView.setText(String.format(Locale.ENGLISH, "%s: %s", item.name, CashHandler.toRubles(DiscountHandler.countDiscount(item.summ, mDiscountSelected * 5))));
-
-                    Button removeButton = ex.findViewById(R.id.remove_from_list_button);
-                    removeButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            App.getInstance().executionsHandler.removeExecutionByName(item.name);
-                            // пока просто перерисую диалог
-                            mDetailsDialog.dismiss();
-                            mResetDetailsDialog = true;
+                    boolean inList = false;
+                    // проверю, нет ли данного обследования в списке комплексов
+                    for (Execution e2 :
+                            iterable) {
+                        if (e2.type == Execution.TYPE_COMPLEX && e2.innerExecutions.containsKey(item.name)) {
+                            // если обследование в списке- не считаю его в общей сумме
+                            inList = true;
                         }
-                    });
-                    root.addView(ex);
+                    }
+                    if (!inList) {
+                        CardView ex = (CardView) inflater.inflate(R.layout.execution_item, root, false);
+                        TextView executionNameView = ex.findViewById(R.id.execution_name);
+                        // если есть скидка
+                        if (mDiscountSelected > 0 && item.type == Execution.TYPE_SIMPLE) {
+                            priceWithDiscount = DiscountHandler.countDiscount(item.summ, mDiscountSelected * 5);
+                            discountSumm += Integer.valueOf(item.summ) - priceWithDiscount;
+                            styledText = String.format(Locale.ENGLISH, "<h2><font color='#0000CC'>%s</font></h2><strike><font color='#000000'>%s</font></strike> <b><font color='#D81B60'>%s</font></b>", item.name, CashHandler.toRubles(item.summ), CashHandler.toRubles(priceWithDiscount));
+
+                            shareTextBuilder.append(item.name);
+                            shareTextBuilder.append(": ");
+                            shareTextBuilder.append("цена без скидки: ");
+                            shareTextBuilder.append(CashHandler.toRubles(item.summ));
+                            shareTextBuilder.append(", цена со скидкой: ");
+                            shareTextBuilder.append(CashHandler.toRubles(priceWithDiscount));
+                            shareTextBuilder.append("\n");
+
+                        } else {
+
+                            if(item.type == Execution.TYPE_COMPLEX){
+                                StringBuilder sb = new StringBuilder();
+                                int fullSumm = 0;
+                                int priceSumm = Integer.valueOf(item.summ);
+                                for (Execution ex1 :
+                                        item.innerExecutions.values()) {
+                                    if(ex1 != null && ex1.summ != null){
+                                        fullSumm += Integer.valueOf(ex1.summ);
+                                        sb.append(ex1.price);
+                                        sb.append(" + ");
+                                    }
+                                }
+                                sb.setLength(sb.length() - 2);
+                                sb.append(" = ");
+                                sb.append(CashHandler.toRubles(fullSumm));
+                                String newSumm = String.format(Locale.ENGLISH, " %s(Скидка: %s%%, %s)",CashHandler.toRubles(priceSumm), CashHandler.countPercentDifference(fullSumm, priceSumm), CashHandler.toRubles(fullSumm - priceSumm));
+
+                                styledText = String.format(Locale.ENGLISH, "<h2><font color='#0000CC'>%s</font></h2><strike><font color='#000000'>%s</font></strike><h2><font color='#D81B60'>%s</font></h2>", item.name, sb.toString(), newSumm);
+                            }
+                            else{
+                                styledText = String.format(Locale.ENGLISH, "<h2><font color='#0000CC'>%s</font></h2><b><font color='#D81B60'>%s</font></b>", item.name, CashHandler.toRubles(item.summ));
+                            }
+                            shareTextBuilder.append(item.name);
+                            shareTextBuilder.append(": ");
+                            shareTextBuilder.append(CashHandler.toRubles(item.summ));
+                            shareTextBuilder.append("\n");
+                        }
+                        executionNameView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+
+                        Button removeButton = ex.findViewById(R.id.remove_from_list_button);
+                        removeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                App.getInstance().executionsHandler.removeExecutionByName(item.name);
+                                // пока просто перерисую диалог
+                                mDetailsDialog.dismiss();
+                                mResetDetailsDialog = true;
+                            }
+                        });
+                        root.addView(ex);
+                    }
                 }
             }
 
+
+            // печать плёнки
+            targetView = view.findViewById(R.id.print_text);
+            if (mPrintPrice > 0) {
+                styledText = String.format(Locale.ENGLISH, "<font color='#000000'>Печать плёнки:</font> <b><font color='#D81B60'>%s</font></b>", CashHandler.toRubles(mPrintPrice));
+                targetView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+
+                shareTextBuilder.append("Печать плёнки: ");
+                shareTextBuilder.append(CashHandler.toRubles(mPrintPrice));
+                shareTextBuilder.append("\n");
+            } else {
+                targetView.setVisibility(View.GONE);
+            }
+
+            // контраст
+            targetView = view.findViewById(R.id.contrast_text);
+            if (mContrastSelected > 0) {
+                PriceInfo executionsInfo = App.getInstance().executionsData.getValue();
+                if (executionsInfo != null) {
+                    Contrast contrastsInfo = executionsInfo.contrasts.get(mContrastSelected - 1);
+                    styledText = String.format(Locale.ENGLISH, "<font color='#000000'>%s: %s</font> <b><font color='#D81B60'>%s</font></b>", contrastsInfo.name, contrastsInfo.volume, CashHandler.toRubles(contrastsInfo.summ));
+                    targetView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+
+                    shareTextBuilder.append("Контрастирование: ");
+                    shareTextBuilder.append(contrastsInfo.volume);
+                    shareTextBuilder.append(" ");
+                    shareTextBuilder.append(CashHandler.toRubles(contrastsInfo.summ));
+                    shareTextBuilder.append("\n");
+                }
+            } else {
+                targetView.setVisibility(View.GONE);
+            }
+
+            // наркоз
+            targetView = view.findViewById(R.id.anesthesia_text);
+            if (mAnesthesiaSelected > 0) {
+                PriceInfo executionsInfo = App.getInstance().executionsData.getValue();
+                if (executionsInfo != null) {
+                    Anesthesia anesthesia = executionsInfo.anesthesia.get(mAnesthesiaSelected - 1);
+                    styledText = String.format(Locale.ENGLISH, "<font color='#000000'>Наркоз: %s</font> <b><font color='#D81B60'>%s</font></b>", anesthesia.name, CashHandler.toRubles(anesthesia.summ));
+                    targetView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+                    shareTextBuilder.append("Наркоз: ");
+                    shareTextBuilder.append(anesthesia.name);
+                    shareTextBuilder.append(" ");
+                    shareTextBuilder.append(CashHandler.toRubles(anesthesia.summ));
+                    shareTextBuilder.append("\n");
+                }
+            } else {
+                targetView.setVisibility(View.GONE);
+            }
+
+            // если назначена скидка- выведу её
+            targetView = view.findViewById(R.id.discount_text);
+            if (discountSumm > 0) {
+                styledText = String.format(Locale.ENGLISH, "<font color='#008577'>Скидка: %d%%</font> <b>(<font color='#D81B60'>%s</font>)</b>", mDiscountSelected * 5, CashHandler.toRubles(discountSumm));
+                targetView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+                shareTextBuilder.append("Скидка: ");
+                shareTextBuilder.append(mDiscountSelected * 5);
+                shareTextBuilder.append("% (");
+                shareTextBuilder.append(CashHandler.toRubles(discountSumm));
+                shareTextBuilder.append(")\n");
+            } else {
+                targetView.setVisibility(View.GONE);
+            }
+
+            // обработаю общую сумму
+            targetView = view.findViewById(R.id.total_summ);
+            styledText = String.format(Locale.ENGLISH, "<font color='#000000'>Всего:</font> <b><font color='#D81B60'>%s</font></b>", CashHandler.toRubles(mTotalSumm));
+            targetView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
+            shareTextBuilder.append("Всего: ");
+            shareTextBuilder.append(CashHandler.toRubles(mTotalSumm));
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Детализация выбранных обследований")
+            builder.setTitle("Детализация стоимости услуг")
                     .setPositiveButton(android.R.string.ok, null)
                     .setNegativeButton(R.string.reset_message, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dropSelected();
+                        }
+                    })
+                    .setNeutralButton(R.string.share_message, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String shareMsg = shareTextBuilder.toString();
+                            Intent mShareIntent = new Intent();
+                            mShareIntent.setAction(Intent.ACTION_SEND);
+                            mShareIntent.setType("text/plain");
+                            mShareIntent.putExtra(Intent.EXTRA_TEXT, shareMsg);
+                            startActivity(Intent.createChooser(mShareIntent, "Поделиться"));
                         }
                     })
                     .setView(view);
@@ -302,11 +414,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void handlePrint() {
         mPrint = !mPrint;
-        if(mPrint){
+        if (mPrint) {
             // добавлю к общей стоимости стоимость печати
             mPrintPrice = mMyViewModel.getPrintPrice();
-        }
-        else{
+        } else {
             mPrintPrice = 0;
         }
         // оповещу об изменении цены
@@ -317,10 +428,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mIsGrid = !mIsGrid;
         mAdapter.isGrid = mIsGrid;
         mRecycler.removeAllViews();
-        if(mIsGrid){
+        if (mIsGrid) {
             mRecycler.setLayoutManager(new GridLayoutManager(this, 4));
-        }
-        else{
+        } else {
             mRecycler.setLayoutManager(new LinearLayoutManager(this));
         }
         mAdapter.notifyDataSetChanged();
@@ -358,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         PriceInfo list = App.getInstance().executionsData.getValue();
         ArrayList<String> values = new ArrayList<>();
         values.add(getBaseContext().getString(R.string.no_anesthesia_item));
-        if(list != null){
+        if (list != null) {
             for (Anesthesia item : list.anesthesia) {
                 values.add(item.name);
             }
@@ -395,6 +505,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mPrintPrice = 0;
         mPrint = false;
         App.getInstance().executionsHandler.executionsList.postValue(null);
+        Toast.makeText(this, "Выбранные услуги сброшены", Toast.LENGTH_LONG).show();
     }
 
     private void showDiscountDialog() {
@@ -434,6 +545,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         // оповещу об изменении цены
         App.getInstance().executionsHandler.executionsList.postValue(App.getInstance().executionsHandler.executionsList.getValue());
     }
+
     private void setAnesthesia(int which) {
         mAnesthesiaCost = mMyViewModel.applyAnesthesia(which);
         mAnesthesiaSelected = which;

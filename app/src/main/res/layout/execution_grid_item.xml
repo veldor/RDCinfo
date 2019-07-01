@@ -33,7 +33,7 @@
                 android:layout_marginRight="8dp"
                 android:text="@{execution.shortName}"
                 android:textAlignment="center"
-                android:textColor="@color/colorAccent"
+                android:textColor="#0000CC"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
